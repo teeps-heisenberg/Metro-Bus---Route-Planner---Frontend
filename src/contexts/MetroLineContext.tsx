@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { MetroLineCode, LineInfo, apiService } from '../services/api';
+import { logAnalytics } from '../supabase/helpers/logAnalytics';
 
 interface MetroLineContextType {
   selectedLine: MetroLineCode;
@@ -74,6 +75,7 @@ export const MetroLineProvider: React.FC<MetroLineProviderProps> = ({ children }
   }, [currentLineInfo]);
 
   const handleSetSelectedLine = (line: MetroLineCode) => {
+    logAnalytics('line_selected', { line_code: line }, line.toString());
     setSelectedLine(line);
   };
 

@@ -125,13 +125,13 @@ const RoutePlanner: React.FC = () => {
         destination: destinationVal,
         preferred_time: currentTime,
         timestamp: new Date().toISOString()
-      });
+      },selectedLine.toString());
       const response = await apiService.planRoute(request);
       if (response.success && response.route_plans.length > 0) {
         logAnalytics('auto_route_planned_response', {
           route_plans: response.route_plans,
           timestamp: new Date().toISOString()
-        });
+        },selectedLine.toString());
         setRoutePlans(response.route_plans);
         // Show next bus time (departure of first segment)
         const firstSegment = response.route_plans[0].segments[0];

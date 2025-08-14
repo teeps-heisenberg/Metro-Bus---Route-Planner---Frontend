@@ -4,6 +4,7 @@ import Header from './components/Header';
 import RoutePlanner from './components/RoutePlanner';
 import ChatAssistant from './components/ChatAssistant';
 import About from './components/About';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import { MetroLineProvider } from './contexts/MetroLineContext';
 import './App.css';
 
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<RoutePlanner />} />
               <Route path="/chat" element={<ChatAssistant />} />
               <Route path="/about" element={<About />} />
+              <Route path="/analytics" element={<AnalyticsDashboard />} />
             </Routes>
           </main>
         </div>

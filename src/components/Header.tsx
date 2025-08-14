@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bus, MessageCircle, Info, Train } from 'lucide-react';
+import { Bus, MessageCircle, Info, Train, BarChart3 } from 'lucide-react';
 import { useMetroLine } from '../contexts/MetroLineContext';
 
 const Header: React.FC = () => {
@@ -80,6 +80,19 @@ const Header: React.FC = () => {
               >
                 <MessageCircle size={20} />
                 <span>AI Assistant</span>
+              </Link>
+              
+              <Link
+                to="/analytics"
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+                  isActive('/analytics') 
+                    ? 'text-white' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+                style={isActive('/analytics') ? { backgroundColor: getLineColor() } : {}}
+              >
+                <BarChart3 size={20} />
+                <span>Analytics</span>
               </Link>
               
               <Link

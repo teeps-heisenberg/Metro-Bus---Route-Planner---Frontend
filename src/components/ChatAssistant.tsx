@@ -3,7 +3,7 @@ import { Send, Bot, User, Bus, Clock, Navigation, Eye } from 'lucide-react';
 import { apiService, ChatResponse, RoutePlan } from '../services/api';
 import ReactMarkdown from "react-markdown";
 import { logAnalytics } from '../supabase/helpers/logAnalytics';
-import { log } from 'console';
+import { useMetroLine } from '../contexts/MetroLineContext';
 // Utility function to convert 24-hour time to 12-hour format
 const formatTime12Hour = (time24: string): string => {
   try {
@@ -32,6 +32,7 @@ const ChatAssistant: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState(''); // for preferred time input
   const [selectedRouteMsgId, setSelectedRouteMsgId] = useState<string | null>(null); // for route panel selection
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { selectedLine } = useMetroLine();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -54,7 +55,7 @@ const ChatAssistant: React.FC = () => {
       message: inputMessage,
       preferred_time: preferredTime.toString() || '',
       timestamp: new Date().toISOString()
-    });
+    },selectedLine.toString());
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage('');
     setLoading(true);
@@ -77,7 +78,7 @@ const ChatAssistant: React.FC = () => {
         response: response.response,
         route_suggestion: response.route_suggestion || null,
         timestamp: new Date().toISOString()
-      });
+      },selectedLine.toString());
       setMessages((prev) => [...prev, botMessage]);
       // If this bot message has a route suggestion, select it in the panel
       if (response.route_suggestion) {

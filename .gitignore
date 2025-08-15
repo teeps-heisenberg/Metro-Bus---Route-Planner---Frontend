@@ -1,5 +1,4 @@
 # Environments
-.env
 
 .vscode/
 
@@ -66,7 +65,6 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -127,3 +125,6 @@ Thumbs.db
 
 # Project specific
 api/test_chat_patterns.py 
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat

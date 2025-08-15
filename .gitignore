@@ -127,3 +127,5 @@ Thumbs.db
 
 # Project specific
 api/test_chat_patterns.py 
+temp_auto_push.bat
+temp_interactive_push.bat

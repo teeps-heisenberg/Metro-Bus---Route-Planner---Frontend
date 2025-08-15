@@ -72,26 +72,24 @@ export default function EnhancedAnalyticsDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 py-4 sm:py-6">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Enhanced Analytics Dashboard</h1>
-            <p className="text-gray-600">Real-time insights and user behavior analysis</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Enhanced Analytics Dashboard</h1>
+            <p className="text-gray-600 text-sm sm:text-base">Real-time insights and user behavior analysis</p>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="bg-green-100 border border-green-200 rounded-lg px-4 py-2">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="bg-green-100 border border-green-200 rounded-lg px-3 sm:px-4 py-2">
               <div className="flex items-center space-x-2">
                 <Activity className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-800">
-                  Live: {realTimeCount} new events
-                </span>
+                <span className="text-xs sm:text-sm font-medium text-green-800">Live: {realTimeCount} new events</span>
               </div>
             </div>
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(Number(e.target.value))}
-              className="border border-gray-300 rounded-lg px-3 py-2"
+              className="border border-gray-300 rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-base"
             >
               <option value={1}>Last Hour</option>
               <option value={24}>Last 24 Hours</option>
@@ -104,7 +102,7 @@ export default function EnhancedAnalyticsDashboard() {
 
       {/* User Behavior Metrics */}
       {userMetrics && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
           {/* Popular Origins */}
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
@@ -143,7 +141,7 @@ export default function EnhancedAnalyticsDashboard() {
 
       {/* Peak Usage Hours */}
       {userMetrics && (
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-6">
           <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
             <Clock className="w-5 h-5 mr-2 text-purple-600" />
             Peak Usage Hours
@@ -174,7 +172,7 @@ export default function EnhancedAnalyticsDashboard() {
 
       {/* Performance Metrics */}
       {userMetrics && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-blue-100">

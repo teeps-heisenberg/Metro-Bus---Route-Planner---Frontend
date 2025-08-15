@@ -144,11 +144,21 @@ export default function AnalyticsDashboard() {
       const isWeek = eventDate >= weekAgo;
       const isMonth = eventDate >= monthAgo;
 
-      if (event.event_type === 'auto_route_planned_response') {
+      // Exclude website_opened and line_changed from both queries and responses
+      if (event.event_type === 'website_opened' || event.event_type === 'line_changed') {
+        return;
+      }
+
+      // Classify as response if event_type contains 'response'
+      const isResponse = event.event_type.toLowerCase().includes('response');
+      // Classify as query if event_type contains 'request'
+      const isQuery = event.event_type.toLowerCase().includes('request');
+
+      if (isResponse) {
         if (isToday) todayResponses++;
         if (isWeek) weekResponses++;
         if (isMonth) monthResponses++;
-      } else {
+      } else if (isQuery) {
         if (isToday) todayQueries++;
         if (isWeek) weekQueries++;
         if (isMonth) monthQueries++;
@@ -158,9 +168,9 @@ export default function AnalyticsDashboard() {
       if (!hourlyTraffic[hour]) {
         hourlyTraffic[hour] = { queries: 0, responses: 0 };
       }
-      if (event.event_type === 'auto_route_planned_response') {
+      if (isResponse) {
         hourlyTraffic[hour].responses++;
-      } else {
+      } else if (isQuery) {
         hourlyTraffic[hour].queries++;
       }
 
@@ -168,9 +178,9 @@ export default function AnalyticsDashboard() {
       if (!dailyTraffic[dateKey]) {
         dailyTraffic[dateKey] = { queries: 0, responses: 0 };
       }
-      if (event.event_type === 'auto_route_planned_response') {
+      if (isResponse) {
         dailyTraffic[dateKey].responses++;
-      } else {
+      } else if (isQuery) {
         dailyTraffic[dateKey].queries++;
       }
     });
@@ -260,22 +270,22 @@ export default function AnalyticsDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-4 md:py-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-blue-100 rounded-xl">
                 <BarChart3 className="h-8 w-8 text-blue-600" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-                <p className="text-gray-600">Real-time insights from your Metro Bus Route Planner</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+                <p className="text-gray-600 text-sm sm:text-base">Real-time insights from your Metro Bus Route Planner</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-r from-green-400 to-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+            <div className="flex items-center space-x-4 mt-4 md:mt-0">
+              <div className="bg-gradient-to-r from-green-400 to-green-500 text-white px-3 sm:px-4 py-2 rounded-lg shadow-lg">
                 <div className="flex items-center space-x-2">
                   <Activity className="h-4 w-4 animate-pulse" />
-                  <span className="font-semibold">Live: {realTimeCount} new events</span>
+                  <span className="font-semibold text-xs sm:text-base">Live: {realTimeCount} new events</span>
                 </div>
               </div>
             </div>
@@ -283,20 +293,20 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
         {/* Combined Results Section */}
-        <div className="mb-12">
-          <div className="flex items-center space-x-3 mb-6">
+        <div className="mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-4 sm:mb-6">
             <div className="p-2 bg-indigo-100 rounded-lg">
               <TrendingUp className="h-6 w-6 text-indigo-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Combined Results</h2>
-            <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">All Metro Lines</span>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Combined Results</h2>
+            <span className="text-xs sm:text-sm text-gray-500 bg-gray-100 px-2 sm:px-3 py-1 rounded-full">All Metro Lines</span>
           </div>
 
           {/* Combined Traffic Overview */}
           {trafficInsights && (
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6 sm:mb-8">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
@@ -367,7 +377,7 @@ export default function AnalyticsDashboard() {
           )}
 
           {/* Combined Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4">
                 <div className="p-3 bg-blue-100 rounded-xl">
@@ -422,7 +432,7 @@ export default function AnalyticsDashboard() {
 
           {/* Combined Traffic Patterns */}
           {trafficInsights && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8 overflow-x-auto">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <Clock className="h-5 w-5 mr-2 text-blue-600" />
@@ -481,7 +491,7 @@ export default function AnalyticsDashboard() {
           )}
 
           {/* Combined Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8 overflow-x-auto">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <BarChart3 className="h-5 w-5 mr-2 text-purple-600" />
@@ -527,8 +537,8 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Line-Specific Results Section */}
-        <div className="mb-12">
-          <div className="flex items-center space-x-3 mb-6">
+        <div className="mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-4 sm:mb-6">
             <div 
               className="p-2 rounded-lg"
               style={{ backgroundColor: `${getMetroLineColor(selectedLine)}20` }}
@@ -538,9 +548,9 @@ export default function AnalyticsDashboard() {
                 style={{ color: getMetroLineColor(selectedLine) }} 
               />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Line-Specific Results</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Line-Specific Results</h2>
             <span 
-              className="text-sm text-white px-3 py-1 rounded-full font-medium"
+              className="text-xs sm:text-sm text-white px-2 sm:px-3 py-1 rounded-full font-medium"
               style={{ backgroundColor: getMetroLineColor(selectedLine) }}
             >
               {selectedLine} Line
@@ -550,7 +560,7 @@ export default function AnalyticsDashboard() {
           {hasLineData ? (
             <>
               {/* Line-Specific Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div 
                   className="rounded-xl border p-6"
                   style={{
@@ -657,7 +667,7 @@ export default function AnalyticsDashboard() {
               </div>
 
               {/* Line-Specific Charts */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8 overflow-x-auto">
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <BarChart3 className="h-5 w-5 mr-2" style={{ color: getMetroLineColor(selectedLine) }} />
@@ -706,7 +716,7 @@ export default function AnalyticsDashboard() {
               </div>
             </>
           ) : (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-12">
               <div className="text-center">
                 <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gray-100 mb-6">
                   <BarChart3 className="h-10 w-10 text-gray-400" />

@@ -130,32 +130,27 @@ import { Bus, MapPin, Clock, Users, Shield, Zap } from "lucide-react";
 
 const About: React.FC = () => {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-10">
       {/* Page Header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-8 sm:mb-12">
         <h1
           style={{
-            color: "#008080", // teal shade
+            color: "#008080",
             fontWeight: "bold",
             borderBottom: "3px solid #008080",
             paddingBottom: "0.5rem",
           }}
-          className="text-4xl mb-6"
+          className="text-3xl sm:text-4xl mb-4 sm:mb-6"
         >
           About
         </h1>
-
-
-
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Learn more about our modern public transportation system connecting
-          Islamabad and Rawalpindi, designed for speed, safety, and
-          convenience.
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          Learn more about our modern public transportation system connecting Islamabad and Rawalpindi, designed for speed, safety, and convenience.
         </p>
       </div>
 
       {/* Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
         {/* System Overview */}
         <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 border border-gray-100">
           <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">

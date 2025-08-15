@@ -107,16 +107,42 @@ const ChatAssistant: React.FC = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const getLineColor = () => {
+    if (selectedLine === 'GREEN') return 'green';
+    if (selectedLine === 'BLUE') return 'blue';
+    return 'green';
+  };
+  const getLineBg = () => {
+    if (selectedLine === 'GREEN') return 'bg-green-600';
+    if (selectedLine === 'BLUE') return 'bg-blue-600';
+    return 'bg-green-600';
+  };
+  const getLineBg50 = () => {
+    if (selectedLine === 'GREEN') return 'bg-green-50';
+    if (selectedLine === 'BLUE') return 'bg-blue-50';
+    return 'bg-green-50';
+  };
+  const getLineBorder = () => {
+    if (selectedLine === 'GREEN') return 'border-green-300';
+    if (selectedLine === 'BLUE') return 'border-blue-300';
+    return 'border-green-300';
+  };
+  const getLineText = () => {
+    if (selectedLine === 'GREEN') return 'text-green-600';
+    if (selectedLine === 'BLUE') return 'text-blue-600';
+    return 'text-green-600';
+  };
+
   const renderRouteSuggestion = (route: RoutePlan) => (
-    <div className="mt-4 p-5 bg-green-50 border border-green-300 rounded-xl shadow-sm text-left animate-fade-in">
-      <h4 className="font-semibold text-green-600 mb-3 text-lg">Suggested Route</h4>
+    <div className={`mt-4 p-5 ${getLineBg50()} border ${getLineBorder()} rounded-xl shadow-sm text-left animate-fade-in`}>
+      <h4 className={`font-semibold ${getLineText()} mb-3 text-lg`}>Suggested Route</h4>
       <div className="mb-2 text-gray-800 flex items-center gap-1">
-        <Navigation className="w-4 h-4 text-green-600" />
+        <Navigation className={`w-4 h-4 ${getLineText()}`} />
         <span className="font-medium">{route.origin} → {route.destination}</span>
       </div>
       {route.segments.map((segment, idx) => (
-        <div key={idx} className="flex items-center gap-3 p-2 bg-white rounded-lg shadow-sm mb-2 hover:bg-green-50 transition-colors">
-          <Bus className="w-5 h-5 text-green-600 flex-shrink-0" />
+        <div key={idx} className={`flex items-center gap-3 p-2 bg-white rounded-lg shadow-sm mb-2 hover:${getLineBg50()} transition-colors`}>
+          <Bus className={`w-5 h-5 ${getLineText()} flex-shrink-0`} />
           <div className="flex-1">
             <div className="font-medium text-gray-800">{segment.route_name} ({segment.direction})</div>
             <div className="text-sm text-gray-500">{segment.start_stop} → {segment.end_stop}</div>
@@ -157,7 +183,8 @@ const ChatAssistant: React.FC = () => {
             </div>
           )}
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          {/* Chat area with scrollable container */}
+          <div className="flex-1 overflow-y-auto max-h-[60vh] p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 mt-12">
                 <Bot className="w-12 h-12 mx-auto mb-4" />
@@ -168,21 +195,19 @@ const ChatAssistant: React.FC = () => {
             {messages.map(msg => {
               const isSelected = msg.id === selectedRouteMsgId;
               return (
-                <div key={msg.id} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'} ${isSelected ? 'ring-2 ring-green-300 rounded-lg' : ''}`}>
+                <div key={msg.id} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'} ${isSelected ? `ring-2 ${getLineBorder()} rounded-lg` : ''}`}>
                   <div className={`flex items-start gap-2 max-w-xs lg:max-w-md ${msg.isUser ? 'flex-row-reverse gap-x-reverse' : ''}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.isUser ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.isUser ? `${getLineBg()} text-white` : 'bg-gray-200 text-gray-600'}`}>
                       {msg.isUser ? <User size={16} /> : <Bot size={16} />}
                     </div>
-                    <div className={`rounded-xl px-4 py-2 shadow ${msg.isUser ? 'bg-green-600 text-white' : 'bg-gray-50 text-gray-800'}`}>
+                    <div className={`rounded-xl px-4 py-2 shadow ${msg.isUser ? `${getLineBg()} text-white` : 'bg-gray-50 text-gray-800'}`}>
                       <div className="whitespace-pre-wrap text-left">
                         <ReactMarkdown>{msg.message}</ReactMarkdown>
                       </div>
-                      <p className={`text-xs mt-1 ${msg.isUser ? 'text-green-100' : 'text-gray-500'}`}>
-                        {formatTime(msg.timestamp)}
-                      </p>
+                      <p className={`text-xs mt-1 ${msg.isUser ? 'text-white/80' : 'text-gray-500'}`}>{formatTime(msg.timestamp)}</p>
                       {!msg.isUser && msg.routeSuggestion && (
                         <button
-                          className={`mt-2 flex items-center text-xs px-2 py-1 rounded transition-colors ${isSelected ? 'bg-green-600 text-white' : 'bg-white border border-green-400 text-green-600 hover:bg-green-600 hover:text-white'}`}
+                          className={`mt-2 flex items-center text-xs px-2 py-1 rounded transition-colors ${isSelected ? `${getLineBg()} text-white` : `bg-white border ${getLineBorder()} ${getLineText()} hover:${getLineBg()} hover:text-white`}`}
                           onClick={() => setSelectedRouteMsgId(msg.id)}
                         >
                           <Eye className="w-4 h-4 mr-1" />
@@ -194,31 +219,6 @@ const ChatAssistant: React.FC = () => {
                 </div>
               );
             })}
-
-            {loading && (
-              <div className="flex justify-start">
-                <div className="flex items-start gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center">
-                    <Bot size={16} />
-                  </div>
-                  <div className="bg-gray-100 rounded-xl px-4 py-2">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {loading && (
-              <div className="sticky bottom-0 left-0 right-0 mt-2 bg-white/80 backdrop-blur rounded-md px-3 py-2 shadow border border-gray-200 flex items-center gap-2" aria-live="polite">
-                <Clock className="w-4 h-4 text-green-600" />
-                <span className="text-sm text-gray-700">Assistant is typing<span className="ml-1">…</span></span>
-              </div>
-            )}
-
             <div ref={messagesEndRef} />
           </div>
 
@@ -229,20 +229,20 @@ const ChatAssistant: React.FC = () => {
               onChange={e => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask about routes, schedules, or travel tips..."
-              className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
               disabled={loading}
             />
             <input
               type="time"
               value={preferredTime}
               onChange={e => setPreferredTime(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 max-w-xs"
+              className="px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 max-w-xs"
               disabled={loading}
             />
             <button
               onClick={sendMessage}
               disabled={loading || !inputMessage.trim()}
-              className="flex items-center justify-center px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`flex items-center justify-center px-4 py-2 rounded-xl ${getLineBg()} text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <Send size={16} />
             </button>

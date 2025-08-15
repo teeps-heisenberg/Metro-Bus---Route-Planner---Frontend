@@ -1,46 +1,128 @@
-.App {
-  text-align: center;
+/* Metro Theme Variables */
+:root {
+  --metro-green: #10b981;
+  --metro-blue: #3b82f6;
+  --metro-orange: #f97316;
+  --metro-primary-color: #10b981;
+  --metro-theme-color: green;
 }
 
-/* Custom animations */
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+.theme-green {
+  --metro-primary-color: #10b981;
 }
 
-.slide-up {
-  animation: slideUp 0.3s ease-out;
+.theme-blue {
+  --metro-primary-color: #3b82f6;
 }
 
-/* Loading spinner */
-.spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #22c55e;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Custom button styles */
-.btn-primary {
-  @apply bg-metro-green hover:bg-metro-dark text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
-}
-
-.btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
-}
-
-/* Card styles */
+/* Enhanced Card Styles */
 .card {
-  @apply bg-white rounded-lg shadow-md p-6 border border-gray-200;
+  @apply bg-white rounded-2xl shadow-xl border border-gray-100 p-8;
+  transition: all 0.3s ease;
 }
 
-/* Input styles */
+.card:hover {
+  @apply shadow-2xl;
+  transform: translateY(-2px);
+}
+
+/* Enhanced Input Styles */
 .input-field {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-metro-green focus:border-transparent;
-} 
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200;
+}
+
+.input-field:hover {
+  @apply border-gray-300;
+}
+
+/* Enhanced Button Styles */
+.btn-primary {
+  @apply px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105 hover:from-emerald-600 hover:to-emerald-700;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);
+}
+
+/* Loading Spinner */
+.spinner {
+  @apply w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+/* Slide Up Animation */
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Metro Line Color Classes */
+.text-metro-green {
+  color: var(--metro-green);
+}
+
+.text-metro-blue {
+  color: var(--metro-blue);
+}
+
+.text-metro-orange {
+  color: var(--metro-orange);
+}
+
+.bg-metro-green {
+  background-color: var(--metro-green);
+}
+
+.bg-metro-blue {
+  background-color: var(--metro-blue);
+}
+
+.bg-metro-orange {
+  background-color: var(--metro-orange);
+}
+
+.border-metro-green {
+  border-color: var(--metro-green);
+}
+
+.border-metro-blue {
+  border-color: var(--metro-blue);
+}
+
+.border-metro-orange {
+  border-color: var(--metro-orange);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    @apply p-6;
+  }
+
+  .btn-primary {
+    @apply w-full;
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s
+    ease;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+a:focus {
+  outline: 2px solid var(--metro-primary-color);
+  outline-offset: 2px;
+}

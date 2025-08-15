@@ -31,7 +31,17 @@ interface TrafficInsights {
   dailyTraffic: { date: string; queries: number; responses: number }[];
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+// Metro line color mapping - ensuring consistent colors
+const getMetroLineColor = (lineCode: string) => {
+  switch (lineCode) {
+    case 'GREEN':
+      return '#10b981'; // emerald green - matches Header component
+    case 'BLUE':
+      return '#5194f6'; // blue - matches Header component
+    default:
+      return '#6b7280'; // gray for unknown lines
+  }
+};
 
 export default function AnalyticsDashboard() {
   const { selectedLine } = useMetroLine();
@@ -506,7 +516,7 @@ export default function AnalyticsDashboard() {
                     dataKey="count"
                   >
                     {getLineCodeChartData().map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={getMetroLineColor(entry.line.replace('Line ', ''))} />
                     ))}
                   </Pie>
                   <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
@@ -519,47 +529,122 @@ export default function AnalyticsDashboard() {
         {/* Line-Specific Results Section */}
         <div className="mb-12">
           <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Route className="h-6 w-6 text-blue-600" />
+            <div 
+              className="p-2 rounded-lg"
+              style={{ backgroundColor: `${getMetroLineColor(selectedLine)}20` }}
+            >
+              <Route 
+                className="h-6 w-6" 
+                style={{ color: getMetroLineColor(selectedLine) }} 
+              />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Line-Specific Results</h2>
-            <span className="text-sm text-white bg-blue-600 px-3 py-1 rounded-full font-medium">{selectedLine} Line</span>
+            <span 
+              className="text-sm text-white px-3 py-1 rounded-full font-medium"
+              style={{ backgroundColor: getMetroLineColor(selectedLine) }}
+            >
+              {selectedLine} Line
+            </span>
           </div>
 
           {hasLineData ? (
             <>
               {/* Line-Specific Summary */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200 p-6">
+                <div 
+                  className="rounded-xl border p-6"
+                  style={{
+                    background: `linear-gradient(135deg, ${getMetroLineColor(selectedLine)}10, ${getMetroLineColor(selectedLine)}20)`,
+                    borderColor: `${getMetroLineColor(selectedLine)}30`
+                  }}
+                >
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-blue-200 rounded-xl">
-                      <Activity className="h-6 w-6 text-blue-700" />
+                    <div 
+                      className="p-3 rounded-xl"
+                      style={{ backgroundColor: `${getMetroLineColor(selectedLine)}20` }}
+                    >
+                      <Activity 
+                        className="h-6 w-6" 
+                        style={{ color: getMetroLineColor(selectedLine) }} 
+                      />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-blue-700">Line Events</p>
-                      <p className="text-2xl font-bold text-blue-900">{lineSpecificEvents.length}</p>
+                      <p 
+                        className="text-sm font-medium"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
+                        Line Events
+                      </p>
+                      <p 
+                        className="text-2xl font-bold"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
+                        {lineSpecificEvents.length}
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200 p-6">
+                <div 
+                  className="rounded-xl border p-6"
+                  style={{
+                    background: `linear-gradient(135deg, ${getMetroLineColor(selectedLine)}05, ${getMetroLineColor(selectedLine)}15)`,
+                    borderColor: `${getMetroLineColor(selectedLine)}25`
+                  }}
+                >
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-green-200 rounded-xl">
-                      <BarChart3 className="h-6 w-6 text-green-700" />
+                    <div 
+                      className="p-3 rounded-xl"
+                      style={{ backgroundColor: `${getMetroLineColor(selectedLine)}25` }}
+                    >
+                      <BarChart3 
+                        className="h-6 w-6" 
+                        style={{ color: getMetroLineColor(selectedLine) }} 
+                      />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-green-700">Event Types</p>
-                      <p className="text-2xl font-bold text-green-900">{Object.keys(getLineSpecificEventTypeData()).length}</p>
+                      <p 
+                        className="text-sm font-medium"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
+                        Event Types
+                      </p>
+                      <p 
+                        className="text-2xl font-bold"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
+                        {Object.keys(getLineSpecificEventTypeData()).length}
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200 p-6">
+                <div 
+                  className="rounded-xl border p-6"
+                  style={{
+                    background: `linear-gradient(135deg, ${getMetroLineColor(selectedLine)}08, ${getMetroLineColor(selectedLine)}18)`,
+                    borderColor: `${getMetroLineColor(selectedLine)}28`
+                  }}
+                >
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-purple-200 rounded-xl">
-                      <Clock className="h-6 w-6 text-purple-700" />
+                    <div 
+                      className="p-3 rounded-xl"
+                      style={{ backgroundColor: `${getMetroLineColor(selectedLine)}30` }}
+                    >
+                      <Clock 
+                        className="h-6 w-6" 
+                        style={{ color: getMetroLineColor(selectedLine) }} 
+                      />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-purple-700">Today's Events</p>
-                      <p className="text-2xl font-bold text-purple-900">
+                      <p 
+                        className="text-sm font-medium"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
+                        Today's Events
+                      </p>
+                      <p 
+                        className="text-2xl font-bold"
+                        style={{ color: getMetroLineColor(selectedLine) }}
+                      >
                         {lineSpecificEvents.filter(e => {
                           const today = new Date().toDateString();
                           const eventDate = new Date(e.created_at).toDateString();
@@ -575,7 +660,7 @@ export default function AnalyticsDashboard() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <BarChart3 className="h-5 w-5 mr-2 text-blue-600" />
+                    <BarChart3 className="h-5 w-5 mr-2" style={{ color: getMetroLineColor(selectedLine) }} />
                     {selectedLine} Line - Event Types
                   </h3>
                   <ResponsiveContainer width="100%" height={300}>
@@ -584,14 +669,18 @@ export default function AnalyticsDashboard() {
                       <XAxis dataKey="type" stroke="#6b7280" />
                       <YAxis stroke="#6b7280" />
                       <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                      <Bar dataKey="count" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                      <Bar 
+                        dataKey="count" 
+                        style={{ fill: getMetroLineColor(selectedLine) }}
+                        radius={[4, 4, 0, 0]} 
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <TrendingUp className="h-5 w-5 mr-2 text-green-600" />
+                    <TrendingUp className="h-5 w-5 mr-2" style={{ color: getMetroLineColor(selectedLine) }} />
                     {selectedLine} Line - Events Over Time
                   </h3>
                   <ResponsiveContainer width="100%" height={300}>
@@ -600,7 +689,17 @@ export default function AnalyticsDashboard() {
                       <XAxis dataKey="time" stroke="#6b7280" />
                       <YAxis stroke="#6b7280" />
                       <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px' }} />
-                      <Line type="monotone" dataKey="count" stroke="#10B981" strokeWidth={3} dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }} />
+                      <Line 
+                        type="monotone" 
+                        dataKey="count" 
+                        stroke={getMetroLineColor(selectedLine)} 
+                        strokeWidth={3} 
+                        dot={{ 
+                          fill: getMetroLineColor(selectedLine), 
+                          strokeWidth: 2, 
+                          r: 4 
+                        }} 
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -614,11 +713,25 @@ export default function AnalyticsDashboard() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">No Analytics Data Available</h3>
                 <p className="text-gray-600 max-w-md mx-auto text-lg">
-                  There is currently no analytics data available for the <span className="font-semibold text-blue-600">{selectedLine} Line</span>. 
+                  There is currently no analytics data available for the{' '}
+                  <span 
+                    className="font-semibold"
+                    style={{ color: getMetroLineColor(selectedLine) }}
+                  >
+                    {selectedLine} Line
+                  </span>. 
                   Data will appear here once users start planning routes on this line.
                 </p>
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-700">
+                <div className="mt-6 p-4 rounded-lg border"
+                  style={{ 
+                    backgroundColor: `${getMetroLineColor(selectedLine)}10`,
+                    borderColor: `${getMetroLineColor(selectedLine)}30`
+                  }}
+                >
+                  <p 
+                    className="text-sm"
+                    style={{ color: getMetroLineColor(selectedLine) }}
+                  >
                     💡 <strong>Tip:</strong> Try switching to a different metro line or wait for user activity to generate analytics data.
                   </p>
                 </div>

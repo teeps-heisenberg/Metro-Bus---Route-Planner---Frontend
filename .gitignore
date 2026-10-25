@@ -1,5 +1,6 @@
 # Environments
 
+.vscode/
 
 # Node.js (for React frontend)
 node_modules/
@@ -126,4 +127,3 @@ Thumbs.db
 api/test_chat_patterns.py 
 temp_auto_push.bat
 temp_interactive_push.bat
-config.bat
